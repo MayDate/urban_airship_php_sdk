@@ -13,7 +13,8 @@ class AirshipException extends \Exception
 
     private $expected_keys = array('error', 'error_code', 'details');
 
-    public static function fromResponse($response) {
+    public static function fromResponse($response)
+    {
         $exc = new AirshipException();
         $payload = json_decode($response->raw_body, true);
         if ($payload != null) {

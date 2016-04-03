@@ -66,6 +66,11 @@ class Airship
         return new ScheduledPushRequest($this);
     }
 
+    public function tag()
+    {
+        return new Tagger($this);
+    }
+
     /**
      * Build a url against the BASE_URL with the given path and args.
      * @param string $path Path for URL, such as '/api/push/ $path

@@ -29,7 +29,7 @@ CONST all = "all";
 function deviceToken($token)
 {
     // This could return a non boolean false if there is an error
-    if (preg_match(DEVICE_TOKEN_FORMAT, $token) === 0) {
+    if (preg_match(UUID_FORMAT, $token) === 0) {
         throw new InvalidArgumentException("Invalid iOS device token");
     }
 
