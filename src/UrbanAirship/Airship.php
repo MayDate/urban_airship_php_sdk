@@ -6,6 +6,7 @@ Copyright 2013 Urban Airship and Contributors
 namespace UrbanAirship;
 
 use Httpful\Request;
+use UrbanAirship\Channel\Tagger;
 use UrbanAirship\Devices\DeviceTokenList;
 use UrbanAirship\Devices\APIDList;
 use UrbanAirship\Push\PushRequest;
