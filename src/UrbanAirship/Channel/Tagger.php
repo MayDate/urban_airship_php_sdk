@@ -27,7 +27,7 @@ class Tagger
 
     public function add($tags)
     {
-        if (! empty($tags)) {
+        if (!empty($tags)) {
             $this->addTags = $this->arrayifyTags($tags);
         }
         return $this;
@@ -35,7 +35,7 @@ class Tagger
 
     public function remove($tags)
     {
-        if (! empty($tags)) {
+        if (!empty($tags)) {
             $this->removeTags = $this->arrayifyTags($tags);
         }
         return $this;
@@ -43,7 +43,7 @@ class Tagger
 
     public function set($tags)
     {
-        if (! empty($tags)) {
+        if (!empty($tags)) {
             $this->setTags = $this->arrayifyTags($tags);
         }
         return $this;
@@ -51,11 +51,11 @@ class Tagger
 
     private function arrayifyTags($tags)
     {
-        if (! is_array($tags)) {
+        if (!is_array($tags)) {
             $tags = [$tags];
         }
 
-        if (! is_array($tags[key($tags)])) {
+        if (!is_array($tags[key($tags)])) {
             $tags[key($tags)] = [$tags[key($tags)]];
         }
 
@@ -65,13 +65,13 @@ class Tagger
     protected function getPayload()
     {
         $payload['audience'] = $this->audience;
-        if (! empty($this->addTags)) {
+        if (!empty($this->addTags)) {
             $payload['add'] = $this->addTags;
         }
-        if (! empty($this->removeTags)) {
+        if (!empty($this->removeTags)) {
             $payload['remove'] = $this->removeTags;
         }
-        if (! empty($this->setTags)) {
+        if (!empty($this->setTags)) {
             $payload['set'] = $this->setTags;
         }
 
@@ -83,11 +83,8 @@ class Tagger
         $uri = $this->airship->buildUrl(self::TAG_URL);
         $logger = UALog::getLogger();
 
-        $response = $this->airship->request("POST",
-            json_encode($this->getPayload()), $uri, "application/json", 3);
+        $response = $this->airship->request("POST", json_encode($this->getPayload()), $uri, "application/json", 3);
 
-        $payload = json_decode($response->raw_body, true);
-        $logger->debug("Response  is: " . var_export($response));
         $logger->info("Tags created successfully");
         return new PushResponse($response);
     }

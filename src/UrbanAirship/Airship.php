@@ -6,12 +6,14 @@ Copyright 2013 Urban Airship and Contributors
 namespace UrbanAirship;
 
 use Httpful\Request;
+use UrbanAirship\Channel\Importer;
 use UrbanAirship\Channel\Tagger;
+use UrbanAirship\Channel\ChannelList;
 use UrbanAirship\Devices\DeviceTokenList;
 use UrbanAirship\Devices\APIDList;
+use UrbanAirship\NamedUsers\Associate;
 use UrbanAirship\Push\PushRequest;
 use UrbanAirship\Push\ScheduledPushRequest;
-
 
 class Airship
 {
@@ -34,9 +36,20 @@ class Airship
      * @param int $limit Limit on tokens returned
      * @return DeviceTokenList
      */
-    public function listDeviceTokens($limit=null)
+    public function listDeviceTokens($limit = null)
     {
         return new DeviceTokenList($this, $limit);
+    }
+
+    /**
+     * Return a list of channels the app. The ChannelList implements
+     * an Iterator.
+     * @param int $limit Limit on tokens returned
+     * @return ChannelList
+     */
+    public function listChannels($limit = null)
+    {
+        return new ChannelList($this, $limit);
     }
 
     /**
@@ -44,7 +57,7 @@ class Airship
      * @param int $limit Limit on tokens returned
      * @return APIDList
      */
-    public function listAPIDs($limit=null)
+    public function listAPIDs($limit = null)
     {
         return new APIDList($this, $limit);
     }
@@ -72,13 +85,24 @@ class Airship
         return new Tagger($this);
     }
 
+    public function associateNamedUser()
+    {
+        return new Associate($this);
+    }
+
+    public function importChannel()
+    {
+        return new Importer($this);
+    }
+
     /**
      * Build a url against the BASE_URL with the given path and args.
      * @param string $path Path for URL, such as '/api/push/ $path
      * @param mixed $args Args for URL
      * @return string URL
      */
-    public function buildUrl($path, $args=null) {
+    public function buildUrl($path, $args = null)
+    {
         $url = self::BASE_URL . $path;
 
         if (isset($args)) {
@@ -107,7 +131,7 @@ class Airship
      * @return \Httpful\associative|string
      * @throws AirshipException
      */
-    public function request($method, $body, $uri, $contentType=null, $version=3, $request=null)
+    public function request($method, $body, $uri, $contentType = null, $version = 3, $request = null)
     {
         $headers = array("Accept" => sprintf(self::VERSION_STRING, $version));
         if (!is_null($contentType)) {
